@@ -1,5 +1,5 @@
 {
-  "name": "@craigmiller160/certbot-renew",
+  "name": "@craigmiller160/certbot-manual",
   "version": "1.0.0-beta",
   "main": "index.js",
   "license": "MIT",
