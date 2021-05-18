@@ -8,7 +8,10 @@ const path = require('path');
 const DOMAIN = 'craigmiller160.ddns.net';
 const ENTER_DOMAIN_PROMPT = /enter in your domain name/;
 const CREATE_FILE_PROMPT = /Create a file containing just this data/;
+const PRESS_ENTER_PROMPT = /Press Enter to Continue/;
 const AUTHCODE_PATH = path.resolve(os.homedir(), 'authcode', 'authcode.txt');
+
+let challengeReady = false;
 
 const handleOutput = (shell, buffer) => {
 	const text = buffer.toString();
@@ -23,6 +26,8 @@ const handleOutput = (shell, buffer) => {
 		const promptMinusPrefixSuffix = promptMinusPrefix.substring(0, suffixIndex).trim();
 
 		fs.writeFileSync(AUTHCODE_PATH, promptMinusPrefixSuffix);
+		challengeReady = true;
+		shell.stdin.write('\n');
 	}
 };
 
@@ -32,9 +37,5 @@ shell.stdout.on('data', (data) => handleOutput(shell, data));
 shell.stderr.on('data', (data) => handleOutput(shell, data));
 
 shell.on('close', () => {
-	console.log('Close');
+	console.log('Copy cert files to "/opt/kubernetes/data/ingress/cert"');
 });
-
-shell.on('exit', () => {
-	console.log('Exit');
-})
