@@ -3,7 +3,11 @@
   "version": "1.0.0-beta",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node src"
+  },
   "dependencies": {
-    "cross-spawn": "^7.0.3"
+    "cross-spawn": "^7.0.3",
+    "os": "^0.1.1"
   }
 }
