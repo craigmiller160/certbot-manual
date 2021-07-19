@@ -13,12 +13,14 @@ const INGRESS_CERT_PATH = '/opt/kubernetes/data/ingress/cert';
 const CERTBOT_CERT_PATH = `/etc/letsencrypt/live/${DOMAIN}`;
 const CERT_FILENAME = 'fullchain.pem';
 const KEY_FILENAME = 'privkey.pem';
+const RENEW_AND_REPLACE = '1';
 
 const ENTER_EMAIL_PROMPT = /Enter email address/;
 const ENTER_DOMAIN_PROMPT = /enter in your domain name/;
 const ENTER_DOMAIN_2_PROMPT = /enter the domain name/;
 const CREATE_FILE_PROMPT = /Create a file containing just this data/;
 const TERMS_OF_SERVICE_PROMPT = /Please read the Terms of Service/;
+const EXISTING_CERT_PROMPT = /You have an existing certificate that has exactly the same domains/;
 
 let challengeReady = false;
 
@@ -65,6 +67,8 @@ const handleOutput = (shell, buffer) => {
 		sendInput(shell, EMAIL);
 	} else if (TERMS_OF_SERVICE_PROMPT.test(text)) {
 		sendInput(shell, YES);
+	} else if (EXISTING_CERT_PROMPT.test(text)) {
+		sendInput(shell, RENEW_AND_REPLACE);
 	}
 };
 
