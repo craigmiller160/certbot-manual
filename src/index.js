@@ -24,7 +24,7 @@ let challengeReady = false;
 
 const sendInput = (shell, inputText) => {
 	console.log(inputText);
-	shell.sdtin.write(`${inputText}\n`);
+	shell.stdin.write(`${inputText}\n`);
 };
 
 const moveFiles = () => {
