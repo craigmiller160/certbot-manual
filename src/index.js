@@ -11,6 +11,8 @@ const AUTHCODE_PATH = path.resolve(os.homedir(), 'authcode', 'authcode.txt');
 const YES = 'y';
 const INGRESS_CERT_PATH = '/opt/kubernetes/data/ingress/cert';
 const CERTBOT_CERT_PATH = `/etc/letsencrypt/live/${DOMAIN}`;
+const CERT_FILENAME = 'fullchain.pem';
+const KEY_FILENAME = 'privkey.pem';
 
 const ENTER_EMAIL_PROMPT = /Enter email address/;
 const ENTER_DOMAIN_PROMPT = /enter in your domain name/;
@@ -23,6 +25,25 @@ let challengeReady = false;
 const sendInput = (shell, inputText) => {
 	console.log(inputText);
 	shell.sdtin.write(`${inputText}\n`);
+};
+
+const moveFiles = () => {
+	console.log(`Copying cert files from ${CERTBOT_CERT_PATH} to ${INGRESS_CERT_PATH}`);
+
+	const certInputPath = path.resolve(CERTBOT_CERT_PATH, CERT_FILENAME);
+	const keyInputPath = path.resolve(CERTBOT_CERT_PATH, KEY_FILENAME);
+	if (!fs.existsSync(certInputPath)) {
+		throw new Error(`Certificate does not exist at path ${certInputPath}`);
+	}
+
+	if (!fs.existsSync(keyInputPath)) {
+		throw new Error(`Key does not exist at path ${keyInputPath}`);
+	}
+
+	const certOutputPath = path.resolve(INGRESS_CERT_PATH, CERT_FILENAME);
+	const keyOutputPath = path.resolve(INGRESS_CERT_PATH, KEY_FILENAME);
+	fs.renameSync(certInputPath, certOutputPath);
+	fs.renameSync(keyInputPath, keyOutputPath);
 };
 
 const handleOutput = (shell, buffer) => {
@@ -53,5 +74,5 @@ shell.stdout.on('data', (data) => handleOutput(shell, data));
 shell.stderr.on('data', (data) => handleOutput(shell, data));
 
 shell.on('close', () => {
-	console.log(`Copying cert files from ${CERTBOT_CERT_PATH} to ${INGRESS_CERT_PATH}`);
+	moveFiles();
 });
