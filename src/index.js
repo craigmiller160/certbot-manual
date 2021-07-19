@@ -32,6 +32,8 @@ const sendInput = (shell, inputText) => {
 const moveFiles = () => {
 	console.log(`Copying cert files from ${CERTBOT_CERT_PATH} to ${INGRESS_CERT_PATH}`);
 
+	// TODO replace nodejs calls with cross-spawn shell calls including sudo to copy the files
+
 	const certInputPath = path.resolve(CERTBOT_CERT_PATH, CERT_FILENAME);
 	const keyInputPath = path.resolve(CERTBOT_CERT_PATH, KEY_FILENAME);
 	if (!fs.existsSync(certInputPath)) {
