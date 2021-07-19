@@ -13,7 +13,7 @@ const INGRESS_CERT_PATH = '/opt/kubernetes/data/ingress/cert';
 const CERTBOT_CERT_PATH = `/etc/letsencrypt/live/${DOMAIN}`;
 const CERT_FILENAME = 'fullchain.pem';
 const KEY_FILENAME = 'privkey.pem';
-const RENEW_AND_REPLACE = '1';
+const RENEW_AND_REPLACE = '2';
 
 const ENTER_EMAIL_PROMPT = /Enter email address/;
 const ENTER_DOMAIN_PROMPT = /enter in your domain name/;
