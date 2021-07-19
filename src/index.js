@@ -6,6 +6,8 @@ const path = require('path');
 // TODO how to guarantee root rights?
 
 const DOMAIN = 'craigmiller160.ddns.net';
+const EMAIL = 'craigmiller160@gmail.com';
+const ENTER_EMAIL_PROMPT = /Enter email address/;
 const ENTER_DOMAIN_PROMPT = /enter in your domain name/;
 const CREATE_FILE_PROMPT = /Create a file containing just this data/;
 const PRESS_ENTER_PROMPT = /Press Enter to Continue/;
@@ -28,6 +30,9 @@ const handleOutput = (shell, buffer) => {
 		fs.writeFileSync(AUTHCODE_PATH, promptMinusPrefixSuffix);
 		challengeReady = true;
 		shell.stdin.write('\n');
+	} else if (ENTER_EMAIL_PROMPT.test(text)) {
+		console.log(EMAIL);
+		shell.stdin.write(`${EMAIL}\n`);
 	}
 };
 
