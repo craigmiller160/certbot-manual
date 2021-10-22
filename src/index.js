@@ -3,8 +3,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// TODO how to guarantee root rights?
-
 const DOMAIN = 'craigmiller160.ddns.net';
 const EMAIL = 'craigmiller160@gmail.com';
 const AUTHCODE_PATH = path.resolve(os.homedir(), 'authcode', 'authcode.txt');
@@ -34,6 +32,7 @@ const moveFiles = () => {
 
 	const certInputPath = path.resolve(CERTBOT_CERT_PATH, CERT_FILENAME);
 	const keyInputPath = path.resolve(CERTBOT_CERT_PATH, KEY_FILENAME);
+	// TODO need to fix the exists checks here
 	if (!fs.existsSync(certInputPath)) {
 		throw new Error(`Certificate does not exist at path ${certInputPath}`);
 	}
@@ -44,8 +43,8 @@ const moveFiles = () => {
 
 	const certOutputPath = path.resolve(INGRESS_CERT_PATH, CERT_FILENAME);
 	const keyOutputPath = path.resolve(INGRESS_CERT_PATH, KEY_FILENAME);
-	spawn.sync('sudo', 'cp', certInputPath, certOutputPath);
-	spawn.sync('sudo', 'cp', keyInputPath, keyOutputPath);
+	spawn.sync('sudo', ['cp', certInputPath, certOutputPath]);
+	spawn.sync('sudo', ['cp', keyInputPath, keyOutputPath]);
 };
 
 const handleOutput = (shell, buffer) => {
