@@ -37,6 +37,18 @@ Simply run `yarn start` in this directory and then sit back and wait. Do not pus
 
 Restart the `cluster-ingress` with `kubectl rollout restart deployment cluster-ingress`.
 
+Then, Nexus needs to be manually updated with the certs. The p12 password should be `password`.
+
+```
+sudo cp /opt/kubernetes/data/ingress/cert/privkey.pem /opt/kubernetes/data/nexus/data/etc/ssl
+sudo cp /opt/kubernetes/data/ingress/cert/fullchain.pem /opt/kubernetes/data/nexus/data/etc/ssl
+sudo openssl pkcs12 -export -out /opt/kubernetes/data/nexus/data/etc/ssl/nexus.p12 -inkey /opt/kubernetes/data/nexus/data/etc/ssl/privkey.pem -in /opt/kubernetes/data/nexus/data/etc/ssl/fullchain.pem
+sudo chown 200 /opt/kubernetes/data/nexus/data/etc/ssl/*
+sudo chmod 755 /opt/kubernetes/data/nexus/data/etc/ssl/*
+
+kubectl rollout restart deployment nexus
+```
+
 ## Use Certbot Manually
 
 This is how to directly use certbot without the script to generate the certs. Use this if there is a problem with the script.
