@@ -33,6 +33,10 @@ sudo certbot register
 
 Simply run `yarn start` in this directory and then sit back and wait. Do not push any keys, the script should do everything.
 
+## Post-Run Tasks
+
+Restart the `cluster-ingress` with `kubectl rollout restart deployment cluster-ingress`.
+
 ## Use Certbot Manually
 
 This is how to directly use certbot without the script to generate the certs. Use this if there is a problem with the script.
