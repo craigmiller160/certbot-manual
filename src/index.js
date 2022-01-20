@@ -32,12 +32,14 @@ const moveFiles = () => {
 
 	const certInputPath = path.join(CERTBOT_CERT_PATH, CERT_FILENAME);
 	const keyInputPath = path.join(CERTBOT_CERT_PATH, KEY_FILENAME);
-	// TODO need to fix the exists checks here
-	if (!fs.existsSync(certInputPath)) {
+
+	const certExistsResult = spawn.sync('sudo', ['ls', '-l', certInputPath]);
+	if (certExistsResult.status !== 0) {
 		throw new Error(`Certificate does not exist at path ${certInputPath}`);
 	}
 
-	if (!fs.existsSync(keyInputPath)) {
+	const keyExistsResult = spawn.sync('sudo', ['ls', '-l', keyInputPath]);
+	if (keyExistsResult.status !== 0) {
 		throw new Error(`Key does not exist at path ${keyInputPath}`);
 	}
 
