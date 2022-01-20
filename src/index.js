@@ -30,8 +30,8 @@ const sendInput = (shell, inputText) => {
 const moveFiles = () => {
 	console.log(`Copying cert files from ${CERTBOT_CERT_PATH} to ${INGRESS_CERT_PATH}`);
 
-	const certInputPath = path.resolve(CERTBOT_CERT_PATH, CERT_FILENAME);
-	const keyInputPath = path.resolve(CERTBOT_CERT_PATH, KEY_FILENAME);
+	const certInputPath = path.join(CERTBOT_CERT_PATH, CERT_FILENAME);
+	const keyInputPath = path.join(CERTBOT_CERT_PATH, KEY_FILENAME);
 	// TODO need to fix the exists checks here
 	if (!fs.existsSync(certInputPath)) {
 		throw new Error(`Certificate does not exist at path ${certInputPath}`);
@@ -41,8 +41,8 @@ const moveFiles = () => {
 		throw new Error(`Key does not exist at path ${keyInputPath}`);
 	}
 
-	const certOutputPath = path.resolve(INGRESS_CERT_PATH, CERT_FILENAME);
-	const keyOutputPath = path.resolve(INGRESS_CERT_PATH, KEY_FILENAME);
+	const certOutputPath = path.join(INGRESS_CERT_PATH, CERT_FILENAME);
+	const keyOutputPath = path.join(INGRESS_CERT_PATH, KEY_FILENAME);
 	spawn.sync('sudo', ['cp', certInputPath, certOutputPath]);
 	spawn.sync('sudo', ['cp', keyInputPath, keyOutputPath]);
 };
